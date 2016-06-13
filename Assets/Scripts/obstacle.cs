@@ -24,7 +24,7 @@ public class obstacle : MonoBehaviour {
 
 		//Give Random Position to the obstacles
 		m_randpos = pos + 1 + Random.Range (-1.5f, 1.5f);
-		m_randsize = m_randpos + 21f+ Random.Range (-0.75f, 0.75f);
+		m_randsize = m_randpos + 20.75f+ Random.Range (-0.75f, 0.75f);
 		m_Bottom.transform.position = new Vector3(transform.position.x,m_randpos,m_Bottom.transform.position.z);
 		m_Top.transform.position = new Vector3 (transform.position.x, m_randsize, m_Bottom.transform.position.z);
 	}
@@ -59,7 +59,7 @@ public class obstacle : MonoBehaviour {
 			} else {
 				//Reset Position and give random size on reaching limit
 				m_randpos = pos + 1 + Random.Range (-1.5f, 1.5f);
-				m_randsize = m_randpos + 21f+ Random.Range (-0.75f, 0.75f);
+				m_randsize = m_randpos + 20.75f+ Random.Range (-0.75f, 0.75f);
 				m_Bottom.transform.position = new Vector3(transform.position.x,m_randpos,m_Bottom.transform.position.z);
 				m_Top.transform.position = new Vector3 (transform.position.x, m_randsize, m_Bottom.transform.position.z);
 				m_Top.gameObject.SetActive (false);

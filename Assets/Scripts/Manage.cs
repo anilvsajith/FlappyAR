@@ -118,7 +118,7 @@ public class Manage : MonoBehaviour {
 
 		//Move the Floor
 		if (!bird.GetComponent<Movement> ().m_dead) {
-			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (Time.time * 0.25f, 0));
+			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (Time.time * m_speed, 0));
 		} else {
 			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (0, 0));
 		}
