@@ -68,7 +68,7 @@ namespace Vuforia
         #region PRIVATE_METHODS
 
 
-        private void OnTrackingFound()
+		public void OnTrackingFound()
         {	
 			manager.OnTrackingFound ();
 
@@ -91,7 +91,7 @@ namespace Vuforia
 		}
 
 
-        private void OnTrackingLost()
+		public void OnTrackingLost()
         {
 			manager.OnTrackingLost ();
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);

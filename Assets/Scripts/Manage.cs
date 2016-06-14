@@ -4,21 +4,28 @@ using UnityEngine.UI;
 
 public class Manage : MonoBehaviour {
 	public GameObject bird; 
+	public GameObject ARCam;
+	public GameObject MainCam;
+	public GameObject ImageTarget;
 	public GameObject m_GameOver;
 	public GameObject m_Marker;
 	public GameObject ResumeButton;
 	public GameObject QuitOption;
 	public GameObject m_Tap;
 	public GameObject TitleScreen;
+	public GameObject ArNonAr;
 	public bool paused;
 	bool begin;
-	float m_speed;
+	GameObject Game;
+	bool armode;
 	public Text m_Score;
 	public Renderer m_Floor;
 
 	// Use this for initialization
 	void Start () {
+		Game = ImageTarget.transform.Find ("Game").gameObject;
 		begin = false;
+		armode = true;
 	}
 
 	//Function to check if Marker Lost
@@ -91,6 +98,13 @@ public class Manage : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		if (bird.GetComponent<Movement>().m_dead || !begin) {
+			ArNonAr.SetActive (true);
+		} else {
+			ArNonAr.SetActive (false);
+		}
+
 		//Check if Back Button is Pressed
 		if (Input.GetKey (KeyCode.Escape)) {
 			//Disable All UI except Quit Message
@@ -111,16 +125,32 @@ public class Manage : MonoBehaviour {
 
 
 		}
-		if (bird.GetComponent<Movement> ().start) 
-			m_speed = 0.25f;
-		else
-			m_speed = 0.20f;
-
 		//Move the Floor
 		if (!bird.GetComponent<Movement> ().m_dead) {
-			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (Time.time * m_speed, 0));
+			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (Time.time * 0.25f, 0));
 		} else {
 			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (0, 0));
+		}
+	}
+
+	public void ARmode()
+	{
+		if (armode == true) {
+			armode = false;
+			ARCam.SetActive (false);
+			MainCam.SetActive (true);
+			Game.transform.parent = null;
+			ImageTarget.SetActive (false);
+			Game.GetComponent<Armode> ().TrackingFound ();
+			OnTrackingFound ();	
+		} else {
+			Game.GetComponent<Armode> ().TrackingLost ();
+			OnTrackingLost ();
+			armode = true;
+			ARCam.SetActive (true);
+			MainCam.SetActive (false);
+			Game.transform.parent = ImageTarget.transform;
+			ImageTarget.SetActive (true);
 		}
 	}
 }
