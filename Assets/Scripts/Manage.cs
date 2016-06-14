@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class Manage : MonoBehaviour {
 	public GameObject bird; 
@@ -131,6 +133,11 @@ public class Manage : MonoBehaviour {
 		} else {
 			m_Floor.material.SetTextureOffset ("_MainTex", new Vector2 (0, 0));
 		}
+	}
+
+	public void ShowLeaderBoard()
+	{
+		PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkI-_q7l8QYEAIQAA");
 	}
 
 	public void ARmode()

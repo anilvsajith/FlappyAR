@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class Movement : MonoBehaviour {
 	public GameObject m_GameOver;
@@ -39,12 +41,21 @@ public class Movement : MonoBehaviour {
 		BirdMov ["Take 001"].speed = 0.1f;
 		BirdMov.Play ();
 
+
 	}
 
 
 	
 	// Update is called once per frame
 	void Update () {
+		if (PlayerPrefs.GetInt ("Written") == 0) {
+			Social.ReportScore (PlayerPrefs.GetInt ("HighScore"), "CgkI-_q7l8QYEAIQAA", (bool success) => {
+				if (success)
+					PlayerPrefs.SetInt ("Written", 1);
+				else
+					PlayerPrefs.SetInt ("Written", 0);
+			});
+		}
 		if(start && !m_dead)
 			m_Tap.enabled = false;		
 		if (!m_dead) {
@@ -70,7 +81,14 @@ public class Movement : MonoBehaviour {
 
 			//Check and Set Highscore
 			if (PlayerPrefs.GetInt ("HighScore") < score) {
+				Debug.Log ("High");
 				PlayerPrefs.SetInt ("HighScore", score);
+					Social.ReportScore(PlayerPrefs.GetInt ("HighScore"), "CgkI-_q7l8QYEAIQAA", (bool success) => {
+					if(success)
+						PlayerPrefs.SetInt("Written",1);
+					else
+						PlayerPrefs.SetInt("Written",0);
+				});
 			}
 
 			//GameOver UI
