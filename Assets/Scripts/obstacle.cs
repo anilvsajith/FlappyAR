@@ -81,8 +81,9 @@ public class obstacle : MonoBehaviour {
 		}
 
 		if (GameManager.paused == false) {
-
+			Debug.Log ("Called");
 			if (isUpward) {
+				Debug.Log (tempTop.y + "  " + (m_randsize + limit));
 				if (tempTop.y < m_randsize + limit)
 					tempTop.y += u_speed * Time.deltaTime;
 				else

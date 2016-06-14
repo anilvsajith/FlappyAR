@@ -41,13 +41,6 @@ public class Movement : MonoBehaviour {
 		BirdMov ["Take 001"].speed = 0.1f;
 		BirdMov.Play ();
 
-
-	}
-
-
-	
-	// Update is called once per frame
-	void Update () {
 		if (PlayerPrefs.GetInt ("Written") == 0) {
 			Social.ReportScore (PlayerPrefs.GetInt ("HighScore"), "CgkI-_q7l8QYEAIQAA", (bool success) => {
 				if (success)
@@ -56,6 +49,13 @@ public class Movement : MonoBehaviour {
 					PlayerPrefs.SetInt ("Written", 0);
 			});
 		}
+
+	}
+
+
+	
+	// Update is called once per frame
+	void Update () {
 		if(start && !m_dead)
 			m_Tap.enabled = false;		
 		if (!m_dead) {
