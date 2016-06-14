@@ -1,4 +1,4 @@
-﻿	using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class obstacle : MonoBehaviour {
@@ -94,6 +94,8 @@ public class obstacle : MonoBehaviour {
 				else
 					isUpward = true;
 			}
+			tempTop.x = m_Bottom.transform.position.x;
+			m_Top.transform.position = tempTop;
 
 		}
 	
