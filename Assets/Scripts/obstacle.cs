@@ -8,11 +8,12 @@ public class obstacle : MonoBehaviour {
 	public Vector3 RestartPosition;
 	public Manage GameManager;
 	public float m_limit;
-	public float m_Speed;
+	public float m_Speed,u_speed=2f,limit=1f;
 	float m_randpos;
 	float m_randsize;
 	float pos;
-	bool start= false;
+	bool start= false,isUpward=true;
+	Vector3 tempTop;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +27,12 @@ public class obstacle : MonoBehaviour {
 		m_randpos = pos + 1 + Random.Range (-1.5f, 1.5f);
 		m_randsize = m_randpos + 20.75f+ Random.Range (-0.75f, 0.75f);
 		m_Bottom.transform.position = new Vector3(transform.position.x,m_randpos,m_Bottom.transform.position.z);
-		m_Top.transform.position = new Vector3 (transform.position.x, m_randsize, m_Bottom.transform.position.z);
+
+		tempTop.x = transform.position.x;
+		tempTop.z = m_Bottom.transform.position.z;
+		tempTop.y = m_randsize;
+		m_Top.transform.position = tempTop;
+			//new Vector3 (transform.position.x, m_randsize, m_Bottom.transform.position.z);
 	}
 
 	//Function to Reset the obstacles on Restart 
@@ -61,10 +67,31 @@ public class obstacle : MonoBehaviour {
 				m_randpos = pos + 1 + Random.Range (-1.5f, 1.5f);
 				m_randsize = m_randpos + 20.75f+ Random.Range (-0.75f, 0.75f);
 				m_Bottom.transform.position = new Vector3(transform.position.x,m_randpos,m_Bottom.transform.position.z);
-				m_Top.transform.position = new Vector3 (transform.position.x, m_randsize, m_Bottom.transform.position.z);
+
+				tempTop.x = transform.position.x;
+				tempTop.z = m_Bottom.transform.position.z;
+				tempTop.y = m_randsize;
+				m_Top.transform.position = tempTop;
+
 				m_Top.gameObject.SetActive (false);
 				m_Bottom.gameObject.SetActive (false);
 				transform.position = ResetPosition;
+			}
+
+		}
+
+		if (GameManager.paused == false) {
+
+			if (isUpward) {
+				if (tempTop.y < m_randsize + limit)
+					tempTop.y += u_speed * Time.deltaTime;
+				else
+					isUpward = false;	
+			} else {
+				if (tempTop.y > m_randsize)
+					tempTop.y -= u_speed * Time.deltaTime;
+				else
+					isUpward = true;
 			}
 
 		}
