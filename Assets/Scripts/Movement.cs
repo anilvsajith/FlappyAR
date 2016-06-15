@@ -6,6 +6,7 @@ using UnityEngine.SocialPlatforms;
 
 public class Movement : MonoBehaviour {
 	public GameObject m_GameOver;
+	public GameObject m_GameManager;
 	public Rigidbody m_Bird;
 	obstacle[] all;
 	Animation BirdMov;
@@ -60,7 +61,7 @@ public class Movement : MonoBehaviour {
 			m_Tap.enabled = false;		
 		if (!m_dead) {
 			//If not dead Get Player Input and Give force to the Bird
-			if (Input.GetMouseButtonDown (0) ) {
+			if (Input.GetMouseButtonDown (0) && !m_GameManager.GetComponent<Manage> ().quit ) {
 				BirdMov ["Take 001"].speed = 1;
 				BirdMov.Play ();
 				start = true;
@@ -92,11 +93,17 @@ public class Movement : MonoBehaviour {
 			}
 
 			//GameOver UI
-			message = "GAME OVER\n\n<size=27>SCORE</size>\n";
-			Message.text = message;
-			GameOver_Score.text = "" + score;
-			m_GameOver.SetActive (true);
+			if (m_GameManager.GetComponent<Manage> ().tracked && !m_GameManager.GetComponent<Manage> ().quit) {
+				message = "GAME OVER\n\n<size=27>SCORE</size>\n";
+				Message.text = message;
+				GameOver_Score.text = "" + score;
+				m_GameOver.SetActive (true);
+				m_Score.enabled = false;
+			} else {
+				m_GameOver.SetActive (false);
+			}
 		}
+		Debug.Log (m_GameManager.GetComponent<Manage> ().quit);
 
 	}
 

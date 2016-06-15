@@ -18,6 +18,8 @@ public class Manage : MonoBehaviour {
 	public GameObject ArNonAr;
 	public bool paused;
 	bool begin;
+	public bool tracked;
+	public bool quit;
 	GameObject Game;
 	bool armode;
 	public Text m_Score;
@@ -28,11 +30,13 @@ public class Manage : MonoBehaviour {
 		Game = ImageTarget.transform.Find ("Game").gameObject;
 		begin = false;
 		armode = true;
+		quit = false;
 	}
 
 	//Function to check if Marker Lost
 	public void OnTrackingLost()
 	{
+		tracked = false;
 		paused = true;
 		bird.GetComponent<Movement>().enabled = false;
 		if (bird.GetComponent<Movement> ().start){
@@ -60,19 +64,21 @@ public class Manage : MonoBehaviour {
 	{
 		//Bool to decide TitleScreen or Marker message 
 		begin = true;
-
+		tracked = true;
 		//UI for Tap to Start, Resume and disable  Marker Lost/TitleScreen
 		m_Tap.SetActive (true);
-		if (bird.GetComponent<Movement> ().m_dead) {
+		if (bird.GetComponent<Movement> ().m_dead && !quit) {
 			m_GameOver.SetActive (true);
+			//m_Score.enabled = false;
 		}
 		m_Marker.SetActive (false);
 		TitleScreen.SetActive (false);
-		if (bird.GetComponent<Movement> ().start)
+		if (bird.GetComponent<Movement> ().start && !quit)
 			ResumeButton.SetActive (true);
 		else {
 			bird.GetComponent<Movement> ().enabled = true;
-			m_Score.enabled = true;
+			if(!quit && !bird.GetComponent<Movement> ().m_dead)
+				m_Score.enabled = true;
 
 			paused = false;
 		}
@@ -81,15 +87,31 @@ public class Manage : MonoBehaviour {
 		
 	//Resume the game
 	public void Resume()
-	{
+	{		
 		paused = false;
 		m_Score.enabled = true;
 		Time.timeScale = 1;
 		//Enable User Control over the Bird
-		bird.GetComponent<Movement>().enabled = true;
+		bird.GetComponent<Movement> ().enabled = true;
 		//Disable Resume and Quit UI 
 		ResumeButton.SetActive (false);	
+	}
+
+	public void NoQuit()
+	{
+		quit = false;
 		QuitOption.SetActive (false);
+		if (!tracked) {
+			m_GameOver.SetActive (false);
+			m_Marker.SetActive (true);
+		}
+		if (!bird.GetComponent<Movement> ().m_dead && tracked) {
+			paused = false;
+			if (bird.GetComponent<Movement> ().start) {
+				Time.timeScale = 1;
+				m_Score.enabled = true;
+			}
+		}
 	}
 
 	//Function to Quit
@@ -100,8 +122,14 @@ public class Manage : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
-		if (bird.GetComponent<Movement>().m_dead || !begin) {
+		if(Input.GetKey(KeyCode.G))
+		{
+			OnTrackingLost ();
+		}
+		if (Input.GetKey (KeyCode.H)) {
+			OnTrackingFound ();
+		}
+		if (((bird.GetComponent<Movement>().m_dead || !begin) && !quit && !paused) || !begin){
 			ArNonAr.SetActive (true);
 		} else {
 			ArNonAr.SetActive (false);
@@ -110,19 +138,22 @@ public class Manage : MonoBehaviour {
 		//Check if Back Button is Pressed
 		if (Input.GetKey (KeyCode.Escape)) {
 			//Disable All UI except Quit Message
+			quit = true;
 			m_Tap.SetActive (false);
 			m_GameOver.SetActive (false);
 			ResumeButton.SetActive (false);
 			m_Marker.SetActive (false);
 			TitleScreen.SetActive (false);
 			m_Score.enabled = false;
+			ArNonAr.SetActive (false);
 			QuitOption.SetActive (true);
-
+		
 			//Pause the game and disable movement
-			paused = true;
-			bird.GetComponent<Movement>().enabled = false;
-			if (bird.GetComponent<Movement> ().start){
-				Time.timeScale = 0;
+			if (!bird.GetComponent<Movement> ().m_dead) {
+				paused = true;
+				if (bird.GetComponent<Movement> ().start) {
+					Time.timeScale = 0;
+				}
 			}
 
 

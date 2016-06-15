@@ -79,25 +79,6 @@ public class obstacle : MonoBehaviour {
 			}
 
 		}
-
-		if (GameManager.paused == false) {
-			Debug.Log ("Called");
-			if (isUpward) {
-				Debug.Log (tempTop.y + "  " + (m_randsize + limit));
-				if (tempTop.y < m_randsize + limit)
-					tempTop.y += u_speed * Time.deltaTime;
-				else
-					isUpward = false;	
-			} else {
-				if (tempTop.y > m_randsize)
-					tempTop.y -= u_speed * Time.deltaTime;
-				else
-					isUpward = true;
-			}
-			tempTop.x = m_Bottom.transform.position.x;
-			m_Top.transform.position = tempTop;
-
-		}
 	
 	}
 
