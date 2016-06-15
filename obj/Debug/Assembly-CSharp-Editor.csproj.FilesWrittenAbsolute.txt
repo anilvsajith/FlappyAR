@@ -30,3 +30,4 @@
 /Users/qbuser/FlappyAR/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/qbuser/FlappyAR/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/qbuser/FlappyAR/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/qbuser/FlappyAR/Temp/bin/Debug/JarResolverLib.dll

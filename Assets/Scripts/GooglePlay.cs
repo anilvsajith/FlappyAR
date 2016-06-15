@@ -4,6 +4,7 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine;
 
 public class GooglePlay : MonoBehaviour {
+	public Manage Manager;
 	void Awake()
 	{
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
@@ -30,7 +31,12 @@ public class GooglePlay : MonoBehaviour {
 		Social.localUser.Authenticate((bool success) => {
 			// handle success or failure
 			Debug.Log(success);
+			if(!success)
+			{
+				Manager.NoInternet();
+			}
 		});
 	}
 		
+
 }

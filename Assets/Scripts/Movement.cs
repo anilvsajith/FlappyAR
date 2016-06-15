@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour {
 	public GameObject m_GameOver;
 	public GameObject m_GameManager;
 	public Rigidbody m_Bird;
+	public GameObject m_Internet;
 	obstacle[] all;
 	Animation BirdMov;
 	public Text m_Tap;
@@ -103,13 +104,14 @@ public class Movement : MonoBehaviour {
 				m_GameOver.SetActive (false);
 			}
 		}
-		Debug.Log (m_GameManager.GetComponent<Manage> ().quit);
+
 
 	}
 
 	//Function for Retry Button
 	public void Retry()
 	{
+		m_Internet.SetActive (false);
 		//Reset Position of Obstacles and Rest UI
 		for (int i = 0; i < all.Length; i++) {
 			all [i].Restart();
