@@ -5,7 +5,8 @@ using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
 
 public class Manage : MonoBehaviour {
-	public GameObject m_Internet;
+	public Animator Internet;
+	public GameObject m_Inter;
 	public GameObject bird; 
 	public GameObject ARCam;
 	public GameObject MainCam;
@@ -25,10 +26,10 @@ public class Manage : MonoBehaviour {
 	bool armode;
 	public Text m_Score;
 	public Renderer m_Floor;
-	WaitForSeconds m_delay;
+	//WaitForSeconds m_delay;
 	// Use this for initialization
 	void Start () {
-		m_delay = new WaitForSeconds (4.0f);
+		//m_delay = new WaitForSeconds (4.0f);
 		Game = ImageTarget.transform.Find ("Game").gameObject;
 		begin = false;
 		armode = true;
@@ -90,7 +91,7 @@ public class Manage : MonoBehaviour {
 	//Resume the game
 	public void Resume()
 	{		
-		m_Internet.SetActive (false);
+		//m_Internet.SetActive (false);
 		paused = false;
 		m_Score.enabled = true;
 		Time.timeScale = 1;
@@ -102,7 +103,7 @@ public class Manage : MonoBehaviour {
 
 	public void NoQuit()
 	{
-		m_Internet.SetActive (false);
+		//m_Internet.SetActive (false);
 		quit = false;
 		QuitOption.SetActive (false);
 		if (!tracked) {
@@ -134,6 +135,11 @@ public class Manage : MonoBehaviour {
 			OnTrackingFound ();
 		}
 		if (((bird.GetComponent<Movement>().m_dead || !begin) && !quit && !paused) || !begin){
+			if (armode) {
+				ArNonAr.GetComponentInChildren<Text> ().text = "Non AR";
+			} else {
+				ArNonAr.GetComponentInChildren<Text> ().text = "AR";
+			}
 			ArNonAr.SetActive (true);
 		} else {
 			ArNonAr.SetActive (false);
@@ -142,7 +148,7 @@ public class Manage : MonoBehaviour {
 		//Check if Back Button is Pressed
 		if (Input.GetKey (KeyCode.Escape)) {
 			//Disable All UI except Quit Message
-			m_Internet.SetActive (false);
+			//m_Internet.SetActive (false);
 			quit = true;
 			m_Tap.SetActive (false);
 			m_GameOver.SetActive (false);
@@ -191,7 +197,7 @@ public class Manage : MonoBehaviour {
 			armode = false;
 			ARCam.SetActive (false);
 			MainCam.SetActive (true);
-			m_Internet.SetActive (false);
+			//m_Internet.SetActive (false);
 			Game.transform.parent = null;
 			ImageTarget.SetActive (false);
 			Game.GetComponent<Armode> ().TrackingFound ();
@@ -200,7 +206,7 @@ public class Manage : MonoBehaviour {
 			Game.GetComponent<Armode> ().TrackingLost ();
 			OnTrackingLost ();
 			armode = true;
-			m_Internet.SetActive (false);
+			//m_Internet.SetActive (false);
 			ARCam.SetActive (true);
 			MainCam.SetActive (false);
 			Game.transform.parent = ImageTarget.transform;
@@ -210,12 +216,14 @@ public class Manage : MonoBehaviour {
 
 	public void NoInternet()
 	{
-		StartCoroutine(Internet());
+		Internet.SetTrigger ("NoInternet");
+		//Internet.Play ("NoInternet");		
+		//StartCoroutine(Internet());
 	}
-	private IEnumerator Internet(){
-		m_Internet.SetActive (true);
-		yield return m_delay;
-		m_Internet.SetActive (false);
-	}
+//	private IEnumerator Internet(){
+//		m_Internet.SetActive (true);
+//		yield return m_delay;
+//		m_Internet.SetActive (false);
+//	}
 
 }

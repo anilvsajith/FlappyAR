@@ -111,7 +111,7 @@ public class Movement : MonoBehaviour {
 	//Function for Retry Button
 	public void Retry()
 	{
-		m_Internet.SetActive (false);
+		//m_Internet.SetActive (false);
 		//Reset Position of Obstacles and Rest UI
 		for (int i = 0; i < all.Length; i++) {
 			all [i].Restart();
